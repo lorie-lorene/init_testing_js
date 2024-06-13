@@ -1,9 +1,10 @@
+import {expect,it,describe,jest} from 'vitest'
+import { getDiscount} from '../js/promotions/discount/discount'
 import axios from 'axios';
-import getDiscount from './getDiscount';
 
 jest.mock('axios');
 
-describe('getDiscount', () => {
+describe('getDiscount', () => {;
   afterEach(() => {
     jest.restoreAllMocks();
   });
