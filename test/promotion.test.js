@@ -1,4 +1,4 @@
-import { vi,decribe,it,expect } from 'vitest';
+import { vi,describe,it,expect } from 'vitest';
 import { applyDiscount, calculateMoneyOff, calculatePercentageDiscount } from '../js/promotions/promotions';;
 import { getDiscount } from '../js/promotions/discount/discount';
 vi.mock('../js/promotions/discount/discount')

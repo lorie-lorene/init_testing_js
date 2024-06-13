@@ -1,10 +1,14 @@
-import {expect,it,describe,vi,afterEach} from 'vitest'
+import {describe,expect,it,vi,afterEach} from 'vitest'
 import { getExchangeRate} from '../js/promotions/exchange/exchange'
-import exchangeRateProvider from '../js/promotions/exchange/exchangeRateProvider';
+import {exchangeRateProvider} from '../js/promotions/exchange/exchangeRateProvider';
 
-vi.mock('../js/promotions/exchange/exchangeRateProvider', () => ({
-  callExchangeRateProvider: vi.fn(),
-}));
+vi.mock('../js/promotions/exchange/exchangeRateProvider', () => {
+  return {
+    exchangeRateProvider: {
+      callExchangeRateProvider: vi.fn(),
+    },
+  };
+});
 
 describe('getExchangeRate', () => {
   afterEach(() => {
@@ -14,18 +18,18 @@ describe('getExchangeRate', () => {
   it('should call exchangeRateProvider with the correct currency code', async () => {
     const currencyCode = 'EUR';
     const exchangeRate = 1.2;
-    exchangeRateProvider.callExchangeRateProvider.mockResolvedValue(exchangeRate);
+    vi.mocked(exchangeRateProvider.callExchangeRateProvider).mockResolvedValue(exchangeRate);
 
     await getExchangeRate(currencyCode, () => {});
 
-    expect(exchangeRateProvider.callExchangeRateProvider).toHaveBeenCalledTimes(1);
-    expect(exchangeRateProvider.callExchangeRateProvider).toHaveBeenCalledWith(currencyCode);
+    expect(vi.mocked(exchangeRateProvider.callExchangeRateProvider)).toHaveBeenCalledTimes(1);
+    expect(vi.mocked(exchangeRateProvider.callExchangeRateProvider)).toHaveBeenCalledWith(currencyCode);
   });
 
   it('should return the correct response object', async () => {
     const currencyCode = 'EUR';
     const exchangeRate = 1.2;
-    exchangeRateProvider.callExchangeRateProvider.mockResolvedValue(exchangeRate);
+    vi.mocked(exchangeRateProvider.callExchangeRateProvider).mockResolvedValue(exchangeRate);
 
     const callback = vi.fn();
     await getExchangeRate(currencyCode, callback);
@@ -41,7 +45,7 @@ describe('getExchangeRate', () => {
   it('should handle error when exchangeRateProvider rejects', async () => {
     const currencyCode = 'EUR';
     const error = new Error('Error calling exchange rate provider');
-    exchangeRateProvider.callExchangeRateProvider.mockRejectedValue(error);
+    vi.mocked(exchangeRateProvider.callExchangeRateProvider).mockRejectedValue(error);
 
     const callback = vi.fn();
     await getExchangeRate(currencyCode, callback);
