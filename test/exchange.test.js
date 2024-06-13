@@ -1,12 +1,14 @@
-import {expect,it,describe,jest} from 'vitest'
+import {expect,it,describe,vi,afterEach} from 'vitest'
 import { getExchangeRate} from '../js/promotions/exchange/exchange'
 import exchangeRateProvider from '../js/promotions/exchange/exchangeRateProvider';
 
-jest.mock('./exchangeRateProvider');
+vi.mock('../js/promotions/exchange/exchangeRateProvider', () => ({
+  callExchangeRateProvider: vi.fn(),
+}));
 
 describe('getExchangeRate', () => {
   afterEach(() => {
-    jest.restoreAllMocks();
+    vi.restoreAllMocks();
   });
 
   it('should call exchangeRateProvider with the correct currency code', async () => {
@@ -25,7 +27,7 @@ describe('getExchangeRate', () => {
     const exchangeRate = 1.2;
     exchangeRateProvider.callExchangeRateProvider.mockResolvedValue(exchangeRate);
 
-    const callback = jest.fn();
+    const callback = vi.fn();
     await getExchangeRate(currencyCode, callback);
 
     expect(callback).toHaveBeenCalledTimes(1);
@@ -41,7 +43,7 @@ describe('getExchangeRate', () => {
     const error = new Error('Error calling exchange rate provider');
     exchangeRateProvider.callExchangeRateProvider.mockRejectedValue(error);
 
-    const callback = jest.fn();
+    const callback = vi.fn();
     await getExchangeRate(currencyCode, callback);
 
     expect(callback).toHaveBeenCalledTimes(1);
@@ -50,7 +52,7 @@ describe('getExchangeRate', () => {
 
   it('should handle empty currency code', async () => {
     const currencyCode = '';
-    const callback = jest.fn();
+    const callback = vi.fn();
 
     await getExchangeRate(currencyCode, callback);
 
@@ -60,7 +62,7 @@ describe('getExchangeRate', () => {
 
   it('should handle null currency code', async () => {
     const currencyCode = null;
-    const callback = jest.fn();
+    const callback = vi.fn();
 
     await getExchangeRate(currencyCode, callback);
 
@@ -70,7 +72,7 @@ describe('getExchangeRate', () => {
 
   it('should handle undefined currency code', async () => {
     const currencyCode = undefined;
-    const callback = jest.fn();
+    const callback = vi.fn();
 
     await getExchangeRate(currencyCode, callback);
 

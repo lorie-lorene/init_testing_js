@@ -1,12 +1,11 @@
-import {expect,it,describe,jest} from 'vitest'
+import {expect,it,describe,vi,afterEach} from 'vitest'
 import { getDiscount} from '../js/promotions/discount/discount'
 import axios from 'axios';
 
-jest.mock('axios');
-
+vi.mock('axios');
 describe('getDiscount', () => {;
   afterEach(() => {
-    jest.restoreAllMocks();
+    vi.restoreAllMocks();
   });
 
   it('should call axios.get with the correct URL and params', async () => {
