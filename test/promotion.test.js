@@ -1,0 +1,5 @@
+import {expect,test,describe} from 'vitest'
+import { } from '../promotion/discount/discount'
+import { } from '../promotion/exchange/exchange'
+import { } from '../promotion/exchange/exchangeRateProvider'
+import { } from '../promotion/exchangeRateProvider'
